@@ -1,0 +1,13 @@
+steps:
+# Build the container image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/southern-ivy-384402/flaskworldapp', '.']
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/southern-ivy-384402/flaskworldapp']
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args: ['run', 'deploy', 'flaskworldapp', '--image', 'gcr.io/southern-ivy-384402/flaskworldapp', '--region', 'us-central1', '--platform', 'managed','--port','80']
+images:
+- gcr.io/southern-ivy-384402/flaskworldapp
